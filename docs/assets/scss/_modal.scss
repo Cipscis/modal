@@ -1,0 +1,121 @@
+$white: #fff;
+$grey--lightest: #eee;
+$grey--lighter: #ccc;
+$grey--light: #999;
+$grey: #666;
+$grey--mid: #444;
+$grey--dark: #333;
+$black: #000;
+
+@mixin list-reset {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+@mixin button-reset {
+	background: transparent;
+	border: none;
+	border-radius: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+.modal {
+	display: none;
+	&[aria-hidden="false"],
+	&:target {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+	background: rgba($black, 0.4);
+}
+
+.modal--full {
+	.modal__body {
+		max-width: none;
+		max-height: none;
+		width: 100%;
+		height: 100%;
+	}
+	background: $white;
+}
+
+.modal__body-open {
+	// To be placed on the <body> tag when a modal is open
+
+	// Uncomment this rule to prevent background scrolling
+	// while a modal window is open:
+	// overflow: hidden;
+}
+.modal__body-open--full {
+	overflow: hidden;
+}
+
+.modal__body {
+	position: relative;
+
+	overflow: auto;
+
+	width: 100%;
+	height: 100%;
+	padding: 40px;
+	@media (min-width: 768px) {
+		width: auto;
+		max-width: 80%;
+		height: auto;
+		max-height: 80%;
+		padding: 40px 20px 20px;
+	}
+
+	background: $white;
+	color: $grey--dark;
+}
+
+.modal__close {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+
+	text-decoration: none;
+	@include button-reset;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 44px;
+	height: 44px;
+
+	font-size: 15px;
+
+	color: $grey--lightest;
+	&:hover,
+	&:focus {
+		color: darken($grey--lightest, 10);
+	}
+
+	&:before {
+		content: "❌";
+	}
+}
+
+.modal__dummy {
+	position: absolute;
+	clip: rect(0 0 0 0);
+	overflow: hidden;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	border: 0;
+	margin: -1px;
+}

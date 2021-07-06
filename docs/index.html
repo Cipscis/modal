@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Base Package documentation</title>
+	<title>Modal documentation</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-	<link rel="stylesheet" href="/base-package/assets/css/main.css" />
-	<script type="module" src="/base-package/assets/js/dist/bundle.js"></script>
+	<link rel="stylesheet" href="/modal/assets/css/main.css" />
+	<script type="module" src="/modal/assets/js/dist/bundle.js"></script>
 </head>
 <body>
 	<main class="layout">
 		<section>
 			<div class="content">
-				<h1>Base Package documentation</h1>
+				<h1>Modal documentation</h1>
 
 				<p>Explain what your package does.</p>
 			</div>
@@ -38,9 +38,24 @@
 				<h3>Examples</h3>
 
 				<p>Put an example here, using code in <code>/docs/assets/js/src/main.js</code>.</p>
+
+				<p><a href="#modal-full-example" class="button js-modal__trigger" aria-controls="modal-full-example">Open modal</a></p>
 			</div>
 		</section>
 	</main>
+
+	<div class="modal modal--full js-modal" id="modal-full-example" aria-modal="true" role="dialog" aria-labelledby="modal-full-example-name" data-modal-body-open-class="modal__body-open--full">
+		<div class="modal__body js-modal__body">
+			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+
+			<div class="content">
+				<h2 id="modal-full-example-name">Full screen modal</h2>
+
+				<p>This modal uses variant CSS and a custom class applied to the <code>&lt;body&gt;</code> to take over the full screen, including hiding the scrollbar for the body.</p>
+			</div>
+		</div>
+		<span class="modal__dummy" tabindex="0"><!-- Dummy focusable element --></span>
+	</div>
 </body>
 
 </html>

@@ -6,10 +6,10 @@ This is my template repository to use when creating new packages. The top sectio
 
 You will need to install [Node.js](https://nodejs.org/en/) before using this template.
 
-1. Click "[Use this template](https://github.com/cipscis/base-package/generate)" to create a new repository based on this one.
+1. Click "[Use this template](https://github.com/cipscis/modal/generate)" to create a new repository based on this one.
 2. Update the `package.json` file to reflect your new package's details.
 3. Update the paths to assets in `index.html` to use your new package's name. See [GitHub Pages](#github-pages) for more info.
-	1. You can do a global find/replace for `base-package` and `Base Package`.
+	1. You can do a global find/replace for `modal` and `Modal`.
 	2. If you're not me, you'll also want to do a global find/replace for `cipscis` and replace it with your own GitHub username, and be sure to also update the `author` property in the `package.json`.
 4. Create a `.env` file. See [.env](#env-1) for more information.
 5. Run `npm install`.
@@ -27,7 +27,7 @@ Once you have an initial version of your package ready to push, you will want to
 
 You should also update the `CHANGELOG.md` file to describe your changes. This is particularly important after your initial 1.0.0 version.
 
-Then, you can tag that commit with `1.0.0` and run `npm install github:cipscis/base-package#semver:1.x` to install the package in other projects.
+Then, you can tag that commit with `1.0.0` and run `npm install github:cipscis/modal#semver:1.x` to install the package in other projects.
 
 ## Structure
 
@@ -75,11 +75,11 @@ This project comes with a small example test suite built using [Jasmine](https:/
 
 This project is set up to use a GitHub Action every time new code is pushed to the `main` branch. This GitHub Action runs the `build` task, then runs any test suites, then if the tests passed it deploys the contents of the `docs` directory by committing them to a `gh-pages` branch. This `gh-pages` branch should be configured in GitHub to be published to GitHub Pages.
 
-When publishing a project using [GitHub Pages](https://pages.github.com/), the project usually appears at a URL with a path, such as `https://cipscis.github.io/base-package`. This means using root relative URLs such as `/assets/css/main.css` would work locally, but would break when the project is published on GitHub Pages.
+When publishing a project using [GitHub Pages](https://pages.github.com/), the project usually appears at a URL with a path, such as `https://cipscis.github.io/modal`. This means using root relative URLs such as `/assets/css/main.css` would work locally, but would break when the project is published on GitHub Pages.
 
 To fix this, the local Node.js server looks for a `PROJECT_NAME` variable in your [`.env`](#env-1) file. If it finds one, it sets up redirects so URLs starting with `/${PROJECT_NAME}` can be used as though they were root relative, so they will find your assets.
 
-By default, the `index.html` file is configured to be published to GitHub Pages under the project name `base-package`. When you use it as a base for your own project, you will need to update these URLs.
+By default, the `index.html` file is configured to be published to GitHub Pages under the project name `modal`. When you use it as a base for your own project, you will need to update these URLs.
 
 ---
 
@@ -87,23 +87,23 @@ By default, the `index.html` file is configured to be published to GitHub Pages 
 
 ---
 
-# base-package
+# modal
 
-![Build and deploy status badge](https://github.com/cipscis/base-package/actions/workflows/build-and-deploy.yml/badge.svg)
+![Build and deploy status badge](https://github.com/cipscis/modal/actions/workflows/build-and-deploy.yml/badge.svg)
 
 ## Install
 
-Run `npm install github:cipscis/base-package#semver:1.x`
+Run `npm install github:cipscis/modal#semver:1.x`
 
 ## Usage
 
-See [Base Package documentation](https://cipscis.github.io/base-package/)
+See [Modal documentation](https://cipscis.github.io/modal/)
 
 ## Development
 
 You will need to install [Node.js](https://nodejs.org/en/) before working on this package.
 
-1. Clone the repository using `git clone https://github.com/cipscis/base-package.git`.
+1. Clone the repository using `git clone https://github.com/cipscis/modal.git`.
 2. Run `npm install` to install development dependencies.
 3. Create a [`.env`](#env) file.
 4. Run `npm start` to run the local server and watch CSS and JS files for changes.
@@ -141,7 +141,7 @@ Used by [Express](https://expressjs.com/) to determine which port to use when ru
 An example `.env` file you can use for development is:
 
 ```
-PROJECT_NAME = "base-package"
+PROJECT_NAME = "modal"
 MODE = "development"
 PORT = "8080"
 ```
