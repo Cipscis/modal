@@ -23,7 +23,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## TODO
 
-* Remove active
+* Remove activate
 * Add events instead of using pubsub
 * Make self-initialising?
 * Reorganise
