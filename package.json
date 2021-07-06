@@ -1,7 +1,7 @@
 {
 	"name": "modal",
 	"version": "0.1.0",
-	"description": "This is my base project to use when creating new packages.",
+	"description": "Accessible modal windows.",
 	"private": true,
 	"browser": "./modal.js",
 	"type": "module",
