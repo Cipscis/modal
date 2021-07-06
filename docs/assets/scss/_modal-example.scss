@@ -8,17 +8,14 @@ $grey--dark: #333;
 $black: #000;
 
 .modal {
-	// TODO
 	background: rgba($black, 0.4);
 }
 
 .modal--full {
-	// TODO
 	background: $white;
 }
 
 .modal__body {
-	// TODO
 	padding: 40px;
 	@media (min-width: 768px) {
 		width: auto;
@@ -28,7 +25,6 @@ $black: #000;
 		padding: 40px 20px 20px;
 	}
 
-	// TODO
 	background: $white;
 	color: $grey--dark;
 }
