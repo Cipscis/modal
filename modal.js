@@ -1,34 +1,33 @@
-// import { activate } from 'activate';
 import * as keys from 'keybinding';
 // import { subscribe } from 'pubsub';
 
 const modal = (function (
-	// activate,
 	keys,
-	// subscribe,
+	subscribe,
 ) {
-	const selectors = {
+	const selectors = Object.freeze({
 		modal: '.js-modal',
 		body: '.js-modal__body',
 		trigger: '.js-modal__trigger',
 		close: '.js-modal__close'
-	};
+	});
 
-	const dataSelectors = {
-		bodyOpenClass: 'modal-body-open-class'
-	};
+	const dataAttributes = Object.freeze({
+		bodyOpenClass: 'data-modal-body-open-class'
+	});
 
-	const classes = {
+	const classes = Object.freeze({
 		bodyOpen: 'modal__body-open'
-	};
+	});
 
-	const events = {
+	// TODO
+	const events = Object.freeze({
 		show: '/modal/show',
 		hide: '/modal/hide'
-	};
+	});
 
-	let $focus = undefined; // The active modal window
-	let $active = undefined; // The element that had focus before opening the modal window
+	let $focus; // The active modal window
+	let $active; // The element that had focus before opening the modal window
 
 	const visible = function ($el) {
 		let style = window.getComputedStyle($el);
@@ -43,20 +42,20 @@ const modal = (function (
 
 	// Callback for passing into Array.prototype.filter
 	const focusable = function ($el) {
-		let focusIfNotDisabled = $el.matches('input, select, textarea, button, object');
-		let isNotDisabled = $el.disabled === false;
-
-		let focusThroughHref = $el.matches('a, area') && $el.matches('[href]');
-		let focusThroughTabindex = $el.matches('[tabindex]');
+		const focusIfNotDisabled = $el.matches('input, select, textarea, button, object');
+		const isNotDisabled = $el.disabled === false;
 
 		let isFocusable;
 		if (focusIfNotDisabled) {
 			isFocusable = isNotDisabled;
 		} else {
+			const focusThroughHref = $el.matches('a, area') && $el.matches('[href]');
+			const focusThroughTabindex = $el.matches('[tabindex]');
+
 			isFocusable = focusThroughHref || focusThroughTabindex;
 		}
 
-		let isVisible = visible($el);
+		const isVisible = visible($el);
 
 		isFocusable = isFocusable && isVisible;
 
@@ -65,10 +64,12 @@ const modal = (function (
 
 	// Callback for passing into Array.prototype.filter
 	const tabbable = function ($el) {
-		let isFocusable = focusable($el);
-		let untabbableTabIndex = $el.matches('[tabindex="-1"]');
+		const isFocusable = focusable($el);
+		const untabbableTabIndex = $el.matches('[tabindex="-1"]');
 
-		return isFocusable && !untabbableTabIndex;
+		const isTabbable = isFocusable && !untabbableTabIndex;
+
+		return isTabbable;
 	};
 
 	const module = {
@@ -87,21 +88,22 @@ const modal = (function (
 		},
 
 		_initSubscriptions: function () {
-			// if (subscribe) {
-			// 	subscribe(events.show, module._showById);
-			// 	subscribe(events.hide, module._hide);
-			// }
+			// TODO
+			if (subscribe) {
+				subscribe(events.show, module._showById);
+				subscribe(events.hide, module._hide);
+			}
 		},
 
 		_bindModalActiveEvents: function () {
-			keys.bind('escape', module._hide, true);
+			keys.bind('esc', module._hide, { allowInInput: true });
 
 			document.addEventListener('click', module._hideIfBackgroundClick);
 			document.querySelectorAll('*').forEach(el => el.addEventListener('focus', module._wrapTab));
 		},
 
 		_unbindModalActiveEvents: function () {
-			keys.unbind('escape', module._hide);
+			keys.unbind('esc', module._hide);
 
 			document.removeEventListener('click', module._hideIfBackgroundClick);
 			document.querySelectorAll('*').forEach(el => el.removeEventListener('focus', module._wrapTab));
@@ -109,10 +111,16 @@ const modal = (function (
 
 		// Event callbacks
 		_processTriggerClick: function (e) {
-			let $trigger = e.target.closest(selectors.trigger);
-			let targetId = $trigger.getAttribute('href');
-
 			e.preventDefault();
+
+			const $trigger = e.target.closest(selectors.trigger);
+			const targetId = module._getTargetId($trigger);
+
+			module._showById(targetId);
+		},
+
+		_getTargetId: function ($trigger) {
+			let targetId = $trigger.getAttribute('href');
 
 			if (/^#/.test(targetId) === true) {
 				targetId = targetId.substring(1);
@@ -120,19 +128,20 @@ const modal = (function (
 				targetId = $trigger.getAttribute('aria-controls');
 			}
 
-			module._showById(targetId);
+			return targetId;
 		},
 
 		_wrapTab: function (e) {
-			let $target = e.target;
-			let $body = $active.querySelector(selectors.body);
-			let isInModal = !!$target.closest(selectors.body);
-			let afterModal = $body.compareDocumentPosition($target) === Node.DOCUMENT_POSITION_FOLLOWING;
+			const $target = e.target;
 
+			const isInModal = !!$target.closest(selectors.body);
 			if (!isInModal) {
 				e.preventDefault();
 
-				let $tabbable = module._getTabbable();
+				const $tabbable = module._getTabbable();
+
+				const $body = $active.querySelector(selectors.body);
+				const afterModal = $body.compareDocumentPosition($target) === Node.DOCUMENT_POSITION_FOLLOWING;
 
 				if (afterModal) {
 					// Wrap to start
@@ -145,7 +154,7 @@ const modal = (function (
 		},
 
 		_hideIfBackgroundClick: function (e) {
-			let $this = e.target;
+			const $this = e.target;
 
 			if ($this.closest(selectors.body)) {
 				// Click was within the modal popup, so ignore it
@@ -161,7 +170,7 @@ const modal = (function (
 
 		// Hide/Show functions
 		_showById: function (id) {
-			let $modal = document.querySelector('#' + id);
+			const $modal = document.getElementById(id);
 
 			module._show($modal);
 		},
@@ -177,13 +186,14 @@ const modal = (function (
 			$active = $modal;
 
 			$modal.setAttribute('aria-hidden', false);
-			let bodyOpenClass = module._getBodyOpenClass($modal);
+
+			const bodyOpenClass = module._getBodyOpenClass($modal);
 			document.querySelector('body').classList.add(bodyOpenClass);
 
 			module._onShow($modal);
 
 			// Move focus within modal window
-			let $focusable = module._getFocusable();
+			const $focusable = module._getFocusable();
 			if ($focusable.length) {
 				$focusable[0].focus();
 			}
@@ -199,7 +209,8 @@ const modal = (function (
 		_hide: function () {
 			if ($active) {
 				$active.setAttribute('aria-hidden', true);
-				let bodyOpenClass = module._getBodyOpenClass($active);
+
+				const bodyOpenClass = module._getBodyOpenClass($active);
 				document.querySelector('body').classList.remove(bodyOpenClass);
 
 				module._unbindModalActiveEvents();
@@ -209,13 +220,13 @@ const modal = (function (
 					$focus.focus();
 				}
 
-				$active = undefined;
-				$focus = undefined;
+				$active = null;
+				$focus = null;
 			}
 		},
 
 		_getBodyOpenClass: function ($modal) {
-			let bodyOpenClass = $modal.getAttribute(`data-${dataSelectors.bodyOpenClass}`) || classes.bodyOpen;
+			const bodyOpenClass = $modal.getAttribute(dataAttributes.bodyOpenClass) || classes.bodyOpen;
 
 			return bodyOpenClass;
 		},
@@ -223,20 +234,20 @@ const modal = (function (
 		// Focus management
 		_getFocusable: function ($modal) {
 			$modal = $modal || $active;
-			let $body = $modal.querySelector(selectors.body);
+			const $body = $modal.querySelector(selectors.body);
 
-			let $descendents = $body.querySelectorAll('*');
-			let $focusable = Array.prototype.filter.call($descendents, focusable);
+			const $descendents = $body.querySelectorAll('*');
+			const $focusable = Array.prototype.filter.call($descendents, focusable);
 
 			return $focusable;
 		},
 
 		_getTabbable: function ($modal) {
 			$modal = $modal || $active;
-			let $body = $modal.querySelector(selectors.body);
+			const $body = $modal.querySelector(selectors.body);
 
-			let $descendents = $body.querySelectorAll('*');
-			let $tabbable = Array.prototype.filter.call($descendents, tabbable);
+			const $descendents = $body.querySelectorAll('*');
+			const $tabbable = Array.prototype.filter.call($descendents, tabbable);
 
 			return $tabbable;
 		}
@@ -246,7 +257,6 @@ const modal = (function (
 		init: module.init
 	};
 })(
-	// activate,
 	keys,
 	// subscribe,
 );
