@@ -1,4 +1,6 @@
 import * as keys from 'keybinding';
+import { trapFocus, untrapFocus } from './trap-focus.js';
+import { focusable } from './focus-helpers.js';
 // import { subscribe } from 'pubsub';
 
 const modal = (function (
@@ -29,49 +31,6 @@ const modal = (function (
 	let $focus; // The active modal window
 	let $active; // The element that had focus before opening the modal window
 
-	const visible = function ($el) {
-		let style = window.getComputedStyle($el);
-
-		let visibility = style.visibility;
-		let display = style.display;
-
-		let isVisible = visibility !== 'hidden' && display !== 'none';
-
-		return isVisible;
-	};
-
-	// Callback for passing into Array.prototype.filter
-	const focusable = function ($el) {
-		const focusIfNotDisabled = $el.matches('input, select, textarea, button, object');
-		const isNotDisabled = $el.disabled === false;
-
-		let isFocusable;
-		if (focusIfNotDisabled) {
-			isFocusable = isNotDisabled;
-		} else {
-			const focusThroughHref = $el.matches('a, area') && $el.matches('[href]');
-			const focusThroughTabindex = $el.matches('[tabindex]');
-
-			isFocusable = focusThroughHref || focusThroughTabindex;
-		}
-
-		const isVisible = visible($el);
-
-		isFocusable = isFocusable && isVisible;
-
-		return isFocusable;
-	};
-
-	// Callback for passing into Array.prototype.filter
-	const tabbable = function ($el) {
-		const isFocusable = focusable($el);
-		const untabbableTabIndex = $el.matches('[tabindex="-1"]');
-
-		const isTabbable = isFocusable && !untabbableTabIndex;
-
-		return isTabbable;
-	};
-
 	const module = {
 		init: function (options) {
 			options = options || {};
@@ -99,14 +58,16 @@ const modal = (function (
 			keys.bind('esc', module._hide, { allowInInput: true });
 
 			document.addEventListener('click', module._hideIfBackgroundClick);
-			document.querySelectorAll('*').forEach(el => el.addEventListener('focus', module._wrapTab));
+
+			trapFocus($active.querySelector(selectors.body));
 		},
 
 		_unbindModalActiveEvents: function () {
 			keys.unbind('esc', module._hide);
 
 			document.removeEventListener('click', module._hideIfBackgroundClick);
-			document.querySelectorAll('*').forEach(el => el.removeEventListener('focus', module._wrapTab));
+
+			untrapFocus();
 		},
 
 		// Event callbacks
@@ -129,28 +90,6 @@ const modal = (function (
 			}
 
 			return targetId;
-		},
-
-		_wrapTab: function (e) {
-			const $target = e.target;
-
-			const isInModal = !!$target.closest(selectors.body);
-			if (!isInModal) {
-				e.preventDefault();
-
-				const $tabbable = module._getTabbable();
-
-				const $body = $active.querySelector(selectors.body);
-				const afterModal = $body.compareDocumentPosition($target) === Node.DOCUMENT_POSITION_FOLLOWING;
-
-				if (afterModal) {
-					// Wrap to start
-					$tabbable[0].focus();
-				} else {
-					// Wrap to end
-					$tabbable[$tabbable.length-1].focus();
-				}
-			}
 		},
 
 		_hideIfBackgroundClick: function (e) {
@@ -239,18 +178,12 @@ const modal = (function (
 			const $descendents = $body.querySelectorAll('*');
 			const $focusable = Array.prototype.filter.call($descendents, focusable);
 
+			if (focusable($body)) {
+				$focusable.unshift($body);
+			}
+
 			return $focusable;
 		},
-
-		_getTabbable: function ($modal) {
-			$modal = $modal || $active;
-			const $body = $modal.querySelector(selectors.body);
-
-			const $descendents = $body.querySelectorAll('*');
-			const $tabbable = Array.prototype.filter.call($descendents, tabbable);
-
-			return $tabbable;
-		}
 	};
 
 	return {

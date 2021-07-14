@@ -45,16 +45,17 @@
 	</main>
 
 	<div class="modal modal--full js-modal" id="modal-full-example" aria-modal="true" role="dialog" aria-labelledby="modal-full-example-name" data-modal-body-open-class="modal__body-open--full">
-		<div class="modal__body js-modal__body">
+		<div class="modal__body js-modal__body" tabindex="-1">
 			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
 
 			<div class="content">
 				<h2 id="modal-full-example-name">Full screen modal</h2>
 
 				<p>This modal uses variant CSS and a custom class applied to the <code>&lt;body&gt;</code> to take over the full screen, including hiding the scrollbar for the body.</p>
+
+				<p>Here is <a href="#">a link</a> to check tab trapping.</p>
 			</div>
 		</div>
-		<span class="modal__dummy" tabindex="0"><!-- Dummy focusable element --></span>
 	</div>
 </body>
 
