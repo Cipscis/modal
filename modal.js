@@ -11,21 +11,21 @@ const modal = (function (
 		modal: '.js-modal',
 		body: '.js-modal__body',
 		trigger: '.js-modal__trigger',
-		close: '.js-modal__close'
+		close: '.js-modal__close',
 	});
 
 	const dataAttributes = Object.freeze({
-		bodyOpenClass: 'data-modal-body-open-class'
+		bodyOpenClass: 'data-modal-body-open-class',
 	});
 
 	const classes = Object.freeze({
-		bodyOpen: 'modal__body-open'
+		bodyOpen: 'modal__body-open',
 	});
 
 	// TODO
 	const events = Object.freeze({
 		show: '/modal/show',
-		hide: '/modal/hide'
+		hide: '/modal/hide',
 	});
 
 	let $focus; // The active modal window

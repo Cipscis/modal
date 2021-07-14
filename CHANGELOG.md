@@ -23,16 +23,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## TODO
 
-* Remove activate
 * Add events instead of using pubsub
 * Make self-initialising?
 * Reorganise
-* Look at inserting the dummy element with JS instead of needing it in the HTML
 * Maybe have a way to move the modal HTML to be a direct child of body when initialising, or perhaps when it opens?
 * Review visible and focusable filters to make sure they're robust
 * With the way you're binding events, not delegating them, you may not need to check closest when processing a trigger click. Consider whether you should remove this or make it a delegated event on the body.
-* Using aria-hidden to hide and show the modal means the :target method with no JavaScript is inaccessible, so set something else like a class instead
-* Make the default modal body focusable but not tabbable, instead of moving focus to the close button by default
 * Consider introducing the history API, perhaps as an option? Sometimes I find it natural to use the back button to close a modal, especially a full screen one
 * Allow nested modals
 
