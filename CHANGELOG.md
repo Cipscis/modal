@@ -27,7 +27,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 * Make self-initialising?
 * Reorganise
 * Maybe have a way to move the modal HTML to be a direct child of body when initialising, or perhaps when it opens?
-* Review visible and focusable filters to make sure they're robust
 * With the way you're binding events, not delegating them, you may not need to check closest when processing a trigger click. Consider whether you should remove this or make it a delegated event on the body.
 * Consider introducing the history API, perhaps as an option? Sometimes I find it natural to use the back button to close a modal, especially a full screen one
 * Allow nested modals
