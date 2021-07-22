@@ -3,6 +3,8 @@ const visible = function ($el) {
 
 	let isVisible = true;
 
+	const style = window.getComputedStyle($el);
+
 	if (
 		(style.position !== 'fixed') &&
 		((['body', 'html']).includes($el.tagName.toLowerCase())) === false
@@ -14,9 +16,6 @@ const visible = function ($el) {
 			isVisible = false;
 		}
 	} else {
-		// If the offsetParent shorthand can't be used, use getComputedStyle
-		const style = window.getComputedStyle($el);
-
 		const visibility = style.visibility;
 		const display = style.display;
 
