@@ -19,6 +19,32 @@
 
 		<section>
 			<div class="content">
+				<h2>Usage</h2>
+
+				<p>Modal's JavaScript API exposes the methods documented on this page, but having correct HTML and CSS is also important for their functionality.</p>
+
+				<p>For some base CSS you can use to set up your own accessible modal windows, see <a href="https://github.com/Cipscis/modal/blob/main/docs/assets/scss/_modal-base.scss" target="_blank">_modal-base.scss</a>.</p>
+
+				<p>These styles set up the necessary styles to made modal windows appear and disappear at the correct times, and makes them appear fixed in the centre of the page.</p>
+
+				<p>For an example of how they can be customised, see <a href="https://github.com/Cipscis/modal/blob/main/docs/assets/scss/_modal-example.scss" target="_blank">_modal-example.scss</a>.</p>
+
+				<p>As for HTML, you can view the source of this page to see how to set up a modal window.</p>
+
+				<p>If a modal should be full screen, you can apply the class <code>modal--full</code>, as in this example:</p>
+			</div>
+
+			<p><a href="#modal-full-example" class="button js-modal__trigger">Open full screen modal</a></p>
+
+			<div class="content">
+				<p>One optional data attribute you can include is <code>data-modal-body-open-class</code>, which specifies a class to be added to the <code>&lt;body&gt;</code> element while the modal is open.</p>
+
+				<p>For example, the full screen modal example adds a class that applies the <code>overflow: hidden;</code> CSS rule to the body, preventing it from scrolling while the modal is open.</p>
+			</div>
+		</section>
+
+		<section>
+			<div class="content">
 				<h2>init</h2>
 
 				<code>init(options)</code>
@@ -52,8 +78,6 @@
 			<p><a href="#modal-trigger-example" class="button js-modal__trigger" role="button">&lt;a&gt; tag with href</a></p>
 
 			<p><button class="button js-modal__trigger" aria-controls="modal-trigger-example">&lt;button&gt; tag with aria-controls</button></p>
-
-			<p><a href="#modal-full-example" class="button js-modal__trigger" aria-controls="modal-full-example">Open full screen modal</a></p>
 		</section>
 
 		<section>
@@ -106,7 +130,7 @@
 			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
 
 			<div class="content">
-				<h2 id="modal-full-example-name">Trigger example</h2>
+				<h2 id="modal-trigger-example-name">Trigger example</h2>
 
 				<p>This modal can be opened by two different triggers. One is an <code>&lt;a&gt;</code> tag using an <code>href</code> attribute, the other is an <code>&lt;button&gt;</code> tag using a <code>aria-controls</code> attribute.</p>
 			</div>
@@ -118,7 +142,7 @@
 			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
 
 			<div class="content">
-				<h2 id="modal-full-example-name">Show example</h2>
+				<h2 id="modal-show-example-name">Show example</h2>
 
 				<p>This modal has no regular triggers on the page, and can only be opened by pressing a button with a callback that calls <code>show('modal-show-example')</code> or by pressing <kbd>B</kbd>.</p>
 			</div>
@@ -128,7 +152,7 @@
 	<div class="modal js-modal" id="modal-hide-example" aria-modal="true" role="dialog" aria-labelledby="modal-hide-example-name">
 		<div class="modal__body js-modal__body" tabindex="-1">
 			<div class="content">
-				<h2 id="modal-full-example-name">Hide example</h2>
+				<h2 id="modal-hide-example-name">Hide example</h2>
 
 				<p>This modal has no regular close button, but this button will call <code>hide()</code>:</p>
 
