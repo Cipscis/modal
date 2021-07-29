@@ -4,7 +4,7 @@ on:
     branches:
       - main
 jobs:
-  build-and-test:
+  build:
 
     runs-on: ubuntu-latest
 
@@ -28,11 +28,8 @@ jobs:
         env:
           MODE: production
 
-      - name: Test
-        run: npm test
-
   deploy:
-    needs: build-and-test
+    needs: build
 
     runs-on: ubuntu-latest
 
