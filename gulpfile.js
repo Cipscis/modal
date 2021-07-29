@@ -44,17 +44,17 @@ const watchJs = function () {
 //////////////////////
 // SCSS Compilation //
 //////////////////////
-import sass from 'gulp-sass';
+import sassInit from 'gulp-sass';
 
 import dartSass from 'sass';
-sass.compiler = dartSass;
+const sass = sassInit(dartSass);
 
 const cssSrcDir = 'docs/assets/scss';
 const cssOutputDir = 'docs/assets/css';
 
 const buildSass = function () {
 	return gulp.src(`${cssSrcDir}/**/*.scss`)
-		.pipe(sass().on('error', sass.logError))
+		.pipe(sass.sync().on('error', sass.logError))
 		.pipe(gulp.dest(cssOutputDir));
 };
 
