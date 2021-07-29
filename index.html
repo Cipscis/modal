@@ -34,7 +34,11 @@
 				<dl>
 					<div>
 						<dt><code>Function onShow($modal)</code></dt>
-						<dd>A function that is called whenever a modal element is opened. It receives the <code>HtmlElement</code> of the opened modal as an argument.</dd>
+						<dd>A function that is called whenever a modal element is shown. It receives the <code>HtmlElement</code> of the shown modal as an argument.</dd>
+					</div>
+					<div>
+						<dt><code>Function onHide($modal)</code></dt>
+						<dd>A function that is called whenever a modal element is hidden. It receives the <code>HtmlElement</code> of the hidden modal as an argument.</dd>
 					</div>
 					<div>
 						<dt><code>string triggerSelector = '.js-modal__trigger'</code></dt>
@@ -74,6 +78,10 @@
 			</div>
 
 			<p><button class="button js-example__show">"Show" example</button></p>
+
+			<div class="content">
+				<p>You can press <kbd>B</kbd> at any time to show this example modal.</p>
+			</div>
 		</section>
 
 		<section>
@@ -112,7 +120,7 @@
 			<div class="content">
 				<h2 id="modal-full-example-name">Show example</h2>
 
-				<p>This modal has no regular triggers on the page, and can only be opened by pressing a button with a callback that calls <code>show('modal-show-example')</code>.</p>
+				<p>This modal has no regular triggers on the page, and can only be opened by pressing a button with a callback that calls <code>show('modal-show-example')</code> or by pressing <kbd>B</kbd>.</p>
 			</div>
 		</div>
 	</div>
