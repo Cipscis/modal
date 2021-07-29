@@ -6,7 +6,9 @@
 	"browser": "./modal.js",
 	"type": "module",
 	"files": [
-		"modal.js"
+		"modal.js",
+		"trap-focus.js",
+		"focus-helpers.js"
 	],
 	"scripts": {
 		"server": "node server/server.js",
