@@ -27,6 +27,9 @@ const module = {
 		if (options.onShow) {
 			module._onShow = options.onShow;
 		}
+		if (options.onHide) {
+			module._onHide = options.onHide;
+		}
 		if (options.triggerSelector) {
 			selectors.trigger = options.triggerSelector;
 		}
@@ -105,23 +108,24 @@ const module = {
 	},
 
 	_show: function ($modal) {
+		if ($modal === $active) {
+			// Do nothing if the modal is already open
+			return;
+		}
+
 		if ($active) {
 			// If there's already an active modal window,
 			// keep remembering the same $focus element
-			$active.setAttribute('aria-hidden', true);
-		} else {
-			$focus = document.activeElement;
+			module._hide();
 		}
+
+		$focus = document.activeElement;
 		$active = $modal;
 
 		$modal.setAttribute('aria-hidden', false);
 
 		const bodyOpenClass = module._getBodyOpenClass($modal);
 		document.querySelector('body').classList.add(bodyOpenClass);
-
-		if (module._onShow) {
-			module._onShow($modal);
-		}
 
 		// Move focus within modal window
 		const $focusable = module._getFocusable();
@@ -130,6 +134,10 @@ const module = {
 		}
 
 		module._bindModalActiveEvents();
+
+		if (module._onShow) {
+			module._onShow($modal);
+		}
 	},
 
 	_hideEvent: function (e) {
@@ -142,9 +150,10 @@ const module = {
 
 	_hide: function () {
 		if ($active) {
-			$active.setAttribute('aria-hidden', true);
+			const $modal = $active;
+			$modal.setAttribute('aria-hidden', true);
 
-			const bodyOpenClass = module._getBodyOpenClass($active);
+			const bodyOpenClass = module._getBodyOpenClass($modal);
 			document.querySelector('body').classList.remove(bodyOpenClass);
 
 			module._unbindModalActiveEvents();
@@ -156,6 +165,10 @@ const module = {
 
 			$active = null;
 			$focus = null;
+
+			if (module._onHide) {
+				module._onHide($modal);
+			}
 		}
 	},
 

@@ -4,9 +4,11 @@
 // both locally and on GitHub Pages
 
 import * as modal from '/modal.js';
+import * as keys from 'keybinding';
 
 modal.init({
-	onShow: console.log,
+	onShow: ($modal) => console.log('Show', $modal),
+	onHide: ($modal) => console.log('Hide', $modal),
 });
 
 const selectors = Object.freeze({
@@ -20,5 +22,6 @@ const showExample = (e) => {
 	modal.show('modal-show-example');
 };
 document.querySelectorAll(selectors.show).forEach(($el) => $el.addEventListener('click', showExample));
+keys.bind('B', showExample);
 
 document.querySelectorAll(selectors.hide).forEach(($el) => $el.addEventListener('click', modal.hide));
