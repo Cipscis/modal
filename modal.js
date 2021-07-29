@@ -2,12 +2,12 @@ import * as keys from 'keybinding';
 import { trapFocus, untrapFocus } from './trap-focus.js';
 import { focusable } from './focus-helpers.js';
 
-const selectors = Object.freeze({
+const selectors = {
 	modal: '.js-modal',
 	body: '.js-modal__body',
 	trigger: '.js-modal__trigger',
 	close: '.js-modal__close',
-});
+};
 
 const dataAttributes = Object.freeze({
 	bodyOpenClass: 'data-modal-body-open-class',
@@ -22,16 +22,20 @@ let $active; // The element that had focus before opening the modal window
 
 const module = {
 	init: function (options) {
-		options = options || {};
+		options = options ?? {};
 
-		module._onShow = options.onShow || (() => {});
+		if (options.onShow) {
+			module._onShow = options.onShow;
+		}
+		if (options.triggerSelector) {
+			selectors.trigger = options.triggerSelector;
+		}
 
 		module._initEvents();
 	},
 
 	_initEvents: function () {
 		document.addEventListener('click', module._processTriggerClickEvent);
-		// document.querySelectorAll(selectors.trigger).forEach(($trigger) => $trigger.addEventListener('click', module._processTriggerClick));
 	},
 
 	_bindModalActiveEvents: function () {
@@ -95,7 +99,9 @@ const module = {
 	_showById: function (id) {
 		const $modal = document.getElementById(id);
 
-		module._show($modal);
+		if ($modal) {
+			module._show($modal);
+		}
 	},
 
 	_show: function ($modal) {
@@ -113,7 +119,9 @@ const module = {
 		const bodyOpenClass = module._getBodyOpenClass($modal);
 		document.querySelector('body').classList.add(bodyOpenClass);
 
-		module._onShow($modal);
+		if (module._onShow) {
+			module._onShow($modal);
+		}
 
 		// Move focus within modal window
 		const $focusable = module._getFocusable();
@@ -174,7 +182,7 @@ const module = {
 
 	// Exports
 	show: function (id) {
-		return module._showById();
+		return module._showById(id);
 	},
 
 	hide: function () {
@@ -182,9 +190,8 @@ const module = {
 	},
 };
 
-module.init();
-
 export const {
+	init,
 	show,
 	hide,
 } = module;
