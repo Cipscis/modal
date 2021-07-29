@@ -1,0 +1,58 @@
+$white: #fff;
+$grey--lightest: #eee;
+// $grey--lighter: #ccc;
+// $grey--light: #999;
+// $grey: #666;
+// $grey--mid: #444;
+$grey--dark: #333;
+$black: #000;
+
+.modal {
+	background: rgba($black, 0.4);
+}
+
+.modal--full {
+	background: $white;
+}
+
+.modal__body {
+	padding: 40px;
+	@media (min-width: 768px) {
+		width: auto;
+		max-width: 80%;
+		height: auto;
+		max-height: 80%;
+		padding: 40px 20px 20px;
+	}
+
+	background: $white;
+	color: $grey--dark;
+}
+
+.modal__close {
+	position: absolute;
+
+	top: 5px;
+	right: 5px;
+
+	text-decoration: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	width: 44px;
+	height: 44px;
+
+	font-size: 15px;
+
+	color: $grey--lightest;
+	&:hover,
+	&:focus {
+		color: darken($grey--lightest, 10);
+	}
+
+	&::before {
+		content: "❌";
+	}
+}

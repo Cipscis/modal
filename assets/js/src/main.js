@@ -3,6 +3,4 @@
 // even though it is the root for the server
 // both locally and on GitHub Pages
 
-import { foo } from '/main.js';
-
-foo();
+import '/modal.js';

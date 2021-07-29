@@ -1,0 +1,88 @@
+@charset "UTF-8";
+@import "https://cipscis.github.io/portfolio/assets/css/style.css";
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.modal[aria-hidden=false], .modal:target {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal--full .modal__body {
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+}
+
+.modal__body-open--full {
+  overflow: hidden;
+}
+
+.modal__body {
+  box-sizing: border-box;
+  position: relative;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.modal__dummy {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  border: 0;
+  margin: -1px;
+}
+
+.modal {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal--full {
+  background: #fff;
+}
+
+.modal__body {
+  padding: 40px;
+  background: #fff;
+  color: #333;
+}
+@media (min-width: 768px) {
+  .modal__body {
+    width: auto;
+    max-width: 80%;
+    height: auto;
+    max-height: 80%;
+    padding: 40px 20px 20px;
+  }
+}
+
+.modal__close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  font-size: 15px;
+  color: #eee;
+}
+.modal__close:hover, .modal__close:focus {
+  color: #d5d5d5;
+}
+.modal__close::before {
+  content: "❌";
+}
