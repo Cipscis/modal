@@ -13,36 +13,121 @@
 			<div class="content">
 				<h1>Modal documentation</h1>
 
-				<p>Explain what your package does.</p>
+				<p>This package provides a JavaScript interface and an HTML and CSS base for accessible modal windows.</p>
 			</div>
 		</section>
 
 		<section>
 			<div class="content">
-				<h2>Method</h2>
+				<h2>init</h2>
 
-				<code>method(argA, argB)</code>
+				<code>init(options)</code>
 
-				<p>Explain what the method does.</p>
+				<p>Calling <code>init</code> makes modal listen for clicks on any elements with the trigger class. When they are clicked, they will find their target via their <code>href</code> attribute, if it exists, or otherwise via their <code>aria-controls</code> attribute.</p>
+
+				<p>Using an <code>&lt;a&gt;</code> tag with an <code>href</code> attribute allows the modals to still work without JavaScript, by leveraging the <code>:target</code> CSS pseudoclass. With this approach, it's recommended to also apply <code>role="button"</code>.</p>
 
 				<h3>Arguments</h3>
 
-				<h4>argA</h4>
+				<h4>options</h4>
 
-				<p>Explain what the argument does.</p>
+				<dl>
+					<div>
+						<dt><code>Function onShow($modal)</code></dt>
+						<dd>A function that is called whenever a modal element is opened. It receives the <code>HtmlElement</code> of the opened modal as an argument.</dd>
+					</div>
+					<div>
+						<dt><code>string triggerSelector = '.js-modal__trigger'</code></dt>
+						<dd>A CSS selector used for listening for trigger element clicks.</dd>
+					</div>
+				</dl>
 
-				<h4>argB</h4>
+				<h3>Examples</h3>
+			</div>
 
-				<p>Explain what the argument does.</p>
+			<p><a href="#modal-trigger-example" class="button js-modal__trigger" role="button">&lt;a&gt; tag with href</a></p>
+
+			<p><button class="button js-modal__trigger" aria-controls="modal-trigger-example">&lt;button&gt; tag with aria-controls</button></p>
+
+			<p><a href="#modal-full-example" class="button js-modal__trigger" aria-controls="modal-full-example">Open full screen modal</a></p>
+		</section>
+
+		<section>
+			<div class="content">
+				<h2>show</h2>
+
+				<code>show(string id)</code>
+
+				<p>Show a modal with a specified <code>id</code> attribute.</p>
+
+				<p>Because modal automatically closes any opened modals if it detects a click outside of them, if <code>show</code> is called during the callback for a click event you will likely also need to call <code>e.stopPropagation();</code> to prevent the modal from being closed immediately.</p>
+
+				<h3>Arguments</h3>
+
+				<h4>id</h4>
+
+				<p>The value of the target modal element's <code>id</code> attribute.</p>
 
 				<h3>Examples</h3>
 
-				<p>Put an example here, using code in <code>/docs/assets/js/src/main.js</code>.</p>
-
-				<p><a href="#modal-full-example" class="button js-modal__trigger" aria-controls="modal-full-example">Open modal</a></p>
+				<p>This button doesn't have the <code>js-modal__trigger</code> selector on it. Instead, it has a custom function bound to it that calls <code>show('modal-show-example')</code>.</p>
 			</div>
+
+			<p><button class="button js-example__show">"Show" example</button></p>
+		</section>
+
+		<section>
+			<div class="content">
+				<h2>hide</h2>
+
+				<code>hide()</code>
+
+				<p>Hide the current modal, if there is one.</p>
+
+				<h3>Examples</h3>
+
+				<p>When this modal is open, you can close it by clicking the "Hide" button, which calls <code>hide()</code>.</p>
+			</div>
+
+			<p><a href="#modal-hide-example" role="button" class="button js-modal__trigger">"Hide" example</a></p>
 		</section>
 	</main>
+
+	<div class="modal js-modal" id="modal-trigger-example" aria-modal="true" role="dialog" aria-labelledby="modal-trigger-example-name">
+		<div class="modal__body js-modal__body" tabindex="-1">
+			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+
+			<div class="content">
+				<h2 id="modal-full-example-name">Trigger example</h2>
+
+				<p>This modal can be opened by two different triggers. One is an <code>&lt;a&gt;</code> tag using an <code>href</code> attribute, the other is an <code>&lt;button&gt;</code> tag using a <code>aria-controls</code> attribute.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal js-modal" id="modal-show-example" aria-modal="true" role="dialog" aria-labelledby="modal-show-example-name">
+		<div class="modal__body js-modal__body" tabindex="-1">
+			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+
+			<div class="content">
+				<h2 id="modal-full-example-name">Show example</h2>
+
+				<p>This modal has no regular triggers on the page, and can only be opened by pressing a button with a callback that calls <code>show('modal-show-example')</code>.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal js-modal" id="modal-hide-example" aria-modal="true" role="dialog" aria-labelledby="modal-hide-example-name">
+		<div class="modal__body js-modal__body" tabindex="-1">
+			<div class="content">
+				<h2 id="modal-full-example-name">Hide example</h2>
+
+				<p>This modal has no regular close button, but this button will call <code>hide()</code>:</p>
+
+				<p><button class="button js-example__hide">Hide</button></p>
+			</div>
+		</div>
+	</div>
 
 	<div class="modal modal--full js-modal" id="modal-full-example" aria-modal="true" role="dialog" aria-labelledby="modal-full-example-name" data-modal-body-open-class="modal__body-open--full">
 		<div class="modal__body js-modal__body" tabindex="-1">
