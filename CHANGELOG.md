@@ -23,7 +23,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## TODO
 
-* Reorganise
 * Maybe have a way to move the modal HTML to be a direct child of body when initialising, or perhaps when it opens?
 * Consider introducing the history API, perhaps as an option? Sometimes I find it natural to use the back button to close a modal, especially a full screen one
 * Allow nested modals

@@ -1,19 +1,22 @@
 # Using this template
 
-This is my template repository to use when creating new packages. The top section of this readme is for how to use it to start a new package, and should be removed as part of the setup process.
+This is my template repository to use when creating new npm packages written in TypeScript. The top section of this readme is for how to use it to start a new package, and should be removed as part of the setup process.
 
 ## Setup
 
 You will need to install [Node.js](https://nodejs.org/en/) before using this template.
 
 1. Click "[Use this template](https://github.com/cipscis/modal/generate)" to create a new repository based on this one.
-2. Update the `package.json` file to reflect your new package's details.
-3. Update the paths to assets in `index.html` to use your new package's name. See [GitHub Pages](#github-pages) for more info.
-	1. You can do a global find/replace for `modal` and `Modal`.
-	2. If you're not me, you'll also want to do a global find/replace for `cipscis` and replace it with your own GitHub username, and be sure to also update the `author` property in the `package.json`.
-4. Create a `.env` file. See [.env](#env-1) for more information.
-5. Run `npm install`.
-6. Update this `README.md` file and the `CHANGELOG.md` file.
+2. Update names throughout the package.
+	a. Replace `modal` with the name of your package as it is used in code.
+	b. Replace `Modal` Replace with the name of your package as it is used in documentation.
+	c. Rename `src/modal.ts` and replace `modal` with the name of your main entry point file.
+	d. Optionally rename `docs/assets/js/src/docs-script.ts` and replace `docs-script` with the name of your documentation script and its associated Webpack entry point.
+	e. Optionally, remove `@cipscis/` from everywhere it appears if this package won't be published beneath a scope.
+	f. If you're not me, replace `@cipscis` with your npm username and then `cipscis` with your GitHub username, and be sure to also update the `author` property in the `package.json`.
+3. Create a `.env` file. See [.env](#env-1) for more information.
+4. Run `npm install`.
+5. Update this `README.md` file and the `CHANGELOG.md` file to remove the instruction sections.
 
 Now you're ready to work on code in this package.
 
@@ -21,25 +24,23 @@ Now you're ready to work on code in this package.
 
 Using the files specified in `package.json`, you can create a package to be installed with npm.
 
-In the `docs` folder, which can be deployed to GitHub Pages but is not included when your package is installed, you can document your package. Here, the package files outside the `docs` folders can be included in the bundle by using root-relative paths such as `import foo from '/main.js';`
+In the `docs` folder, which can be deployed to GitHub Pages but is not included when your package is installed, you can document your package. Webpack is configured to have an alias for your main entry point so you can load it as though it were installed from npm, e.g. `import { foo } from '@cipscis/modal';`
 
 Once you have an initial version of your package ready to push, you will want to update the `version` attribute of your `package.json` file to `"1.0.0"`. See [Semantic Versioning](https://semver.org/spec/v2.0.0.html) for more information on version numbers.
 
 You should also update the `CHANGELOG.md` file to describe your changes. This is particularly important after your initial 1.0.0 version.
 
-Then, you can tag that commit with `1.0.0` and run `npm install github:cipscis/modal#semver:1.x` to install the package in other projects.
+Then, you can run `npm publish` to publish your package. Once published, you can run `npm install @cipscis/modal` to install the package in other projects.
 
 ## Structure
 
 ### Frontend assets
 
-By default, your package consists of a single file. This is called `main.js`, but you can change it. If you do, make sure you update the [`browser`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#browser) property in your `package.json` file. If your package doesn't need to be run in a browser, you should change this property to [`main`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#main).
+By default, your package consists of the contents of the `dist` folder. This folder is populated when the contents of the `src` folder are compiled using `tsc`, which happens automatically prior to publishing. The `src` folder contains a single TypeScript file called `modal.ts`. You can rename this file, but if you do make sure you update the [`browser`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#browser) property in your `package.json` file. If your package doesn't need to be run in a browser, you should change this property to [`main`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#main).
 
-Additional files can be included in your package by adding them to the [`files`](https://docs.npmjs.com/cli/v7/configuring-npm/package-json#files) array in your `package.json` file.
+Assets used for the package's documentation, such as CSS and JavaScript, are contained in `/docs/assets`. In here, the contents of the `scss` folder are used to compile CSS files into the `css` folder.
 
-Assets such as CSS and JavaScript are contained in `/docs/assets`. In here, the contents of the `scss` folder are used to compile CSS files into the `css` folder.
-
-The `/docs/assets/js` folder contains a `src` folder and a `dist` folder. The JavaScript files inside the `src` folder are bundled into the `dist` folder. By default, Webpack is configured to look for a single entry point at `/docs/assets/js/src/main.js`.
+The `/docs/assets/js` folder contains a `src` folder and a `dist` folder. Any JavaScript or TypeScript files inside the `src` folder are bundled into the `dist` folder. By default, Webpack is configured to look for a single entry point at `/docs/assets/js/src/docs-script.ts`, which is bundled into `/docs/assets/js/dist/docs-script.bundle.js`. You can use either JavaScript or TypeScript entry points for your documentation.
 
 ### Backend assets
 
@@ -61,7 +62,7 @@ This file tells [Gulp](https://gulpjs.com/) which files to watch and where to ou
 
 ### webpack.config.js
 
-This file configures [Webpack](https://webpack.js.org/), telling it which entry points to use and where to output its bundled assets. Some configuration is duplicated between here and [`gulpfile.js`](#gulpfilejs)
+This file configures [Webpack](https://webpack.js.org/), telling it which entry points to use and where to output its bundled assets.
 
 ### .env
 
@@ -71,15 +72,15 @@ See [.env](#env-1) for information on setting up a `.env` file.
 
 This project comes with a small example test suite built using [Jasmine](https://jasmine.github.io/), which can be found in `/spec`. You'll want to remove this example before you commit your package's code, and replace it with your own tests.
 
+By default, the tests are run as part of the `npm prepare` script, which runs prior to publishing your package.
+
 ## GitHub Pages
 
-This project is set up to use a GitHub Action every time new code is pushed to the `main` branch. This GitHub Action runs the `build` task, then runs any test suites, then if the tests passed it deploys the contents of the `docs` directory by committing them to a `gh-pages` branch. This `gh-pages` branch should be configured in GitHub to be published to GitHub Pages.
+This project is set up to use a GitHub Action every time new code is pushed to the `main` branch. This `build-and-deploy` workflow runs the `build` npm script, then runs the test script, then if the tests passed it deploys the contents of the `docs` directory by committing them to a `gh-pages` branch. This `gh-pages` branch should be configured in GitHub to be published to GitHub Pages.
 
 When publishing a project using [GitHub Pages](https://pages.github.com/), the project usually appears at a URL with a path, such as `https://cipscis.github.io/modal`. This means using root relative URLs such as `/assets/css/main.css` would work locally, but would break when the project is published on GitHub Pages.
 
 To fix this, the local Node.js server looks for a `PROJECT_NAME` variable in your [`.env`](#env-1) file. If it finds one, it sets up redirects so URLs starting with `/${PROJECT_NAME}` can be used as though they were root relative, so they will find your assets.
-
-By default, the `index.html` file is configured to be published to GitHub Pages under the project name `modal`. When you use it as a base for your own project, you will need to update these URLs.
 
 ---
 
@@ -117,8 +118,7 @@ This project creates five npm tasks:
 * `npm run watch` first runs the `build` task, then watches the relevant directories and reruns the `build` task if it sees any changes.
 
 * `npm start` runs both the `server` and `watch` tasks simultaneously.
-
-* `npm test` task runs any configured test suites using [Jasmine](https://jasmine.github.io/).
+* `npm run prepare` first removes directories containing compiled files, then compiles any TypeScript. You should never need to run this task manually, [the `prepare` script runs automatically](https://docs.npmjs.com/cli/v7/using-npm/scripts#life-cycle-scripts) when npm prepares your package for publishing.
 
 Usually, you will just want to run `npm start`.
 
@@ -164,13 +164,19 @@ These dependencies are used when working on the project locally.
 
 * [Gulp](https://gulpjs.com/): Task runner
 
+* [TypeScript](https://www.typescriptlang.org/): JavaScript extension for static type checking
+
 * [Jasmine](https://jasmine.github.io/): Testing framework
+
+* [@types/jasmine](https://www.npmjs.com/package/@types/jasmine): TypeScript types for Jasmine
 
 * [sass](https://www.npmjs.com/package/sass): Compiling CSS from [Sass](https://sass-lang.com/)
 
 * [gulp-sass](https://www.npmjs.com/package/gulp-sass): Using the `sass` compiler with Gulp
 
 * [Webpack](https://webpack.js.org/): For JavaScript dependency management, used with Gulp
+
+* [ts-loader](https://github.com/TypeStrong/ts-loader): For compiling TypeScript using Webpack
 
 * [Express](https://expressjs.com/): Running a Node.js server, accessed at `http://localhost:<PORT>`
 

@@ -3,8 +3,8 @@
 // even though it is the root for the server
 // both locally and on GitHub Pages
 
-import * as modal from '/modal.js';
-import * as keys from 'keybinding';
+import * as modal from '@cipscis/modal';
+import * as keys from '@cipscis/keybinding';
 
 modal.init({
 	onShow: ($modal) => console.log('Show', $modal),
@@ -16,12 +16,13 @@ const selectors = Object.freeze({
 	hide: '.js-example__hide',
 });
 
-const showExample = (e) => {
+const showExample = (e: Event) => {
 	e.stopPropagation();
 
 	modal.show('modal-show-example');
 };
 document.querySelectorAll(selectors.show).forEach(($el) => $el.addEventListener('click', showExample));
+keys.bind('B', showExample);
 keys.bind('B', showExample);
 
 document.querySelectorAll(selectors.hide).forEach(($el) => $el.addEventListener('click', modal.hide));
