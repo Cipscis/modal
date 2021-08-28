@@ -1,6 +1,6 @@
 import * as keys from '@cipscis/keybinding';
 import { trapFocus, untrapFocus } from './trap-focus.js';
-import { focusable } from './focus-helpers.js';
+import { visible, focusable } from './focus-helpers.js';
 
 interface ModalCallback {
 	($modal: Element): void;
@@ -63,6 +63,10 @@ function init(options?: ModalInitOptions): void {
 	}
 
 	_initEvents();
+
+	// Matching ':target' doesn't work immediately, but requesting an
+	// animation frame delays it enough for the selection to work.
+	requestAnimationFrame(_checkForShownTargetModal);
 }
 
 /**
@@ -70,6 +74,19 @@ function init(options?: ModalInitOptions): void {
  */
 function _initEvents(): void {
 	document.addEventListener('click', _processTriggerClickEvent);
+	window.addEventListener('hashchange', _processHashChangeEvent);
+}
+
+/**
+ * If a modal window is currently shown and matches ':target', ensure it
+ * is recorded correctly as being visible.
+ */
+function _checkForShownTargetModal(): void {
+	const $targetModal = document.querySelector<HTMLElement>(`${selectors.modal}:target`);
+
+	if ($targetModal) {
+		_show($targetModal);
+	}
 }
 
 /**
@@ -105,7 +122,7 @@ function _unbindModalActiveEvents(): void {
 }
 
 /**
- * A callback called when a modal trigger is clicked.
+ * Show the modal associated with the clicked trigger element.
  *
  * @param {Event} e
  */
@@ -122,6 +139,28 @@ function _processTriggerClickEvent(e: Event): void {
 			if (targetId) {
 				_showById(targetId);
 			}
+		}
+	}
+}
+
+/**
+ * If a modal was just shown or hidden based on the hash change, using
+ * a ':target' CSS rule, ensure the hide and show methods are still called.
+ *
+ * @param {Event} e
+ */
+function _processHashChangeEvent(e: Event): void {
+	const $targetModal = document.querySelector<HTMLElement>(`${selectors.modal}:target`);
+
+	if ($active && $active !== $targetModal) {
+		if (visible($active)) {
+			// Previously active modal is still shown, but shouldn't be
+			_hide();
+		}
+	} else {
+		if ($targetModal && visible($targetModal)) {
+			// Newly targeted modal should be made shown
+			_show($targetModal);
 		}
 	}
 }
@@ -254,6 +293,17 @@ function _hide(): void {
 			) {
 				$focus.focus();
 			}
+		}
+
+		// If CSS is in place to show elements matching the ':target'
+		// selector, remove the current hash to ensure they are hidden
+		// correctly instead of remaining the target.
+		if ($active.matches(':target') && visible($active)) {
+			const hashlessLocation = document.location.href.replace(/#.*$/, '#');
+
+			// This will force the page to scroll to the top,
+			// but that can't be avoided if we need to change the :target
+			document.location.href = hashlessLocation;
 		}
 
 		$active = null;
