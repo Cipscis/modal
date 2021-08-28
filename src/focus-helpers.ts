@@ -33,7 +33,7 @@ function visible($el: Element): boolean {
 			isVisible = false;
 		} else {
 			// Check if an element is hidden because of an ancestor's style
-			for (let $ancestor = $el.parentElement; !!$ancestor; $ancestor = $el.parentElement) {
+			for (let $ancestor = $el.parentElement; !!$ancestor; $ancestor = $ancestor.parentElement) {
 				const ancestorStyle = window.getComputedStyle($el);
 
 				// If a ancestor is display: none, this element is hidden
