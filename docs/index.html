@@ -34,7 +34,7 @@
 				<p>If a modal should be full screen, you can apply the class <code>modal--full</code>, as in this example:</p>
 			</div>
 
-			<p><a href="#modal-full-example" class="button js-modal__trigger">Open full screen modal</a></p>
+			<p><a role="button" href="#modal-full-example" class="button js-modal__trigger">Open full screen modal</a></p>
 
 			<div class="content">
 				<p>One optional data attribute you can include is <code>data-modal-body-open-class</code>, which specifies a class to be added to the <code>&lt;body&gt;</code> element while the modal is open.</p>
@@ -75,7 +75,7 @@
 				<h3>Examples</h3>
 			</div>
 
-			<p><a href="#modal-trigger-example" class="button js-modal__trigger" role="button">&lt;a&gt; tag with href</a></p>
+			<p><a role="button" href="#modal-trigger-example" class="button js-modal__trigger">&lt;a&gt; tag with href</a></p>
 
 			<p><button class="button js-modal__trigger" aria-controls="modal-trigger-example">&lt;button&gt; tag with aria-controls</button></p>
 		</section>
@@ -121,13 +121,13 @@
 				<p>When this modal is open, you can close it by clicking the "Hide" button, which calls <code>hide()</code>.</p>
 			</div>
 
-			<p><a href="#modal-hide-example" role="button" class="button js-modal__trigger">"Hide" example</a></p>
+			<p><a role="button" href="#modal-hide-example" class="button js-modal__trigger">"Hide" example</a></p>
 		</section>
 	</main>
 
 	<div class="modal js-modal" id="modal-trigger-example" aria-modal="true" role="dialog" aria-labelledby="modal-trigger-example-name">
 		<div class="modal__body js-modal__body" tabindex="-1">
-			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+			<a role="button" href="#" class="modal__close js-modal__close" aria-label="Close"></a>
 
 			<div class="content">
 				<h2 id="modal-trigger-example-name">Trigger example</h2>
@@ -139,7 +139,7 @@
 
 	<div class="modal js-modal" id="modal-show-example" aria-modal="true" role="dialog" aria-labelledby="modal-show-example-name">
 		<div class="modal__body js-modal__body" tabindex="-1">
-			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+			<a role="button" href="#" class="modal__close js-modal__close" aria-label="Close"></a>
 
 			<div class="content">
 				<h2 id="modal-show-example-name">Show example</h2>
@@ -163,7 +163,7 @@
 
 	<div class="modal modal--full js-modal" id="modal-full-example" aria-modal="true" role="dialog" aria-labelledby="modal-full-example-name" data-modal-body-open-class="modal__body-open--full">
 		<div class="modal__body js-modal__body" tabindex="-1">
-			<a href="#" class="modal__close js-modal__close" aria-label="Close" role="button"></a>
+			<a role="button" href="#" class="modal__close js-modal__close" aria-label="Close"></a>
 
 			<div class="content">
 				<h2 id="modal-full-example-name">Full screen modal</h2>
