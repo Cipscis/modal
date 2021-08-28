@@ -1,5 +1,5 @@
 {
-	"name": "modal",
+	"name": "@cipscis/modal",
 	"version": "0.1.0",
 	"description": "Accessible modal windows.",
 	"private": true,

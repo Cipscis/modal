@@ -118,6 +118,7 @@ This project creates five npm tasks:
 * `npm run watch` first runs the `build` task, then watches the relevant directories and reruns the `build` task if it sees any changes.
 
 * `npm start` runs both the `server` and `watch` tasks simultaneously.
+
 * `npm run prepare` first removes directories containing compiled files, then compiles any TypeScript. You should never need to run this task manually, [the `prepare` script runs automatically](https://docs.npmjs.com/cli/v7/using-npm/scripts#life-cycle-scripts) when npm prepares your package for publishing.
 
 Usually, you will just want to run `npm start`.
@@ -165,10 +166,6 @@ These dependencies are used when working on the project locally.
 * [Gulp](https://gulpjs.com/): Task runner
 
 * [TypeScript](https://www.typescriptlang.org/): JavaScript extension for static type checking
-
-* [Jasmine](https://jasmine.github.io/): Testing framework
-
-* [@types/jasmine](https://www.npmjs.com/package/@types/jasmine): TypeScript types for Jasmine
 
 * [sass](https://www.npmjs.com/package/sass): Compiling CSS from [Sass](https://sass-lang.com/)
 
